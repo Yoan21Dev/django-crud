@@ -1,13 +1,50 @@
+{% load static%}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
-<body>
-    <h1>tasks</h1>
-</body>
-</html>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'main.css' %} ">
 
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+  <div class="col-md-4 offset-md-4">
+    <h1 class="display-4 fw-bold">tasks</h1>
+    <form action="{% url 'create_task' %}" method="POST" class="card card-body bg-secondary">
+        {% csrf_token %}
+        <label for="Title">Title</label>
+        <input type="text" name="title" placeholder="write a title" class="form-control mb-2">
+        <label for="Description">Description</label>
+        <textarea name="description" id="" rows="3" placeholder="write description" class="form-control mb-2"></textarea>
+        <button class="btn btn-success">Save</button>
+    </form>
+    <div class="card card-body text-black mt-2 d-flex flex-row justify-content-between ">
+    {% for task in tasks %}
+    <h4>{{task.title}}</h4>
+    <p>{{task.description}}</p>
+
+    <form action="{% url 'delete_tasks' task.id %}" method="POST">
+        {% csrf_token %}
+        <button class="btn btn-danger">delete</button>
+    </form>
+
+    {% empty %}
+    <h1 class="text-center">No Tasks yey</h1>
+  
+    {% endfor %}
+    
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
